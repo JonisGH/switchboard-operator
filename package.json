@@ -1,0 +1,13 @@
+{
+  "name": "switchboard-operator",
+  "private": true,
+  "packageManager": "pnpm@11.26.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @switchboard/api --filter @switchboard/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "db:generate": "pnpm --filter @switchboard/api db:generate",
+    "db:validate": "pnpm --filter @switchboard/api db:validate"
+  }
+}

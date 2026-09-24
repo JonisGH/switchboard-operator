@@ -1,0 +1,9 @@
+// Domain tables and the first migration are introduced with the Calls milestone.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}

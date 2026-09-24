@@ -1,0 +1,80 @@
+.page {
+  max-width: var(--container-4xl);
+  margin-inline: auto;
+  padding: calc(var(--spacing) * 12) calc(var(--spacing) * 6);
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--spacing) * 4);
+  margin-bottom: calc(var(--spacing) * 12);
+  padding-bottom: calc(var(--spacing) * 5);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  color: var(--foreground);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.intro {
+  max-width: var(--container-2xl);
+}
+
+.eyebrow {
+  margin-bottom: calc(var(--spacing) * 3);
+  color: var(--primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+}
+
+.heading {
+  color: var(--foreground);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.description {
+  margin-top: calc(var(--spacing) * 5);
+  color: var(--muted-foreground);
+  line-height: var(--leading-relaxed);
+}
+
+.connection {
+  margin-top: calc(var(--spacing) * 12);
+}
+
+.connectionTitle {
+  color: var(--card-foreground);
+  font-weight: var(--font-weight-semibold);
+}
+
+.connectionStatus {
+  margin-top: calc(var(--spacing) * 2);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.disclaimer {
+  margin-top: calc(var(--spacing) * 8);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding-block: calc(var(--spacing) * 20);
+  }
+
+  .heading {
+    font-size: var(--text-4xl);
+  }
+}
