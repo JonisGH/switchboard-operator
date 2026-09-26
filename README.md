@@ -1,10 +1,10 @@
 # Switchboard Operator
 
-Switchboard Operator explores an AI-assisted healthcare telephone exchange: log incoming calls, help callers resolve suitable nonclinical questions, and create staff tickets only when human follow-up is needed. It is a portfolio **technical demonstration**, not a healthcare service. Use fictional caller information only.
+Switchboard Operator is a conceptual AI-assisted business phone switchboard: it aims to handle incoming calls, resolve suitable requests during the conversation, and create structured WorkOrders only when human follow-up is needed. This independent engineering portfolio project is not associated with any employer or company. It explores product thinking, system design, frontend/backend integration, and pragmatic architecture. All demo data must be fictional.
 
 ## Current state (Milestone 1)
 
-The workspace contains a React/TypeScript shell, a Fastify liveness endpoint, a shared Zod response contract, and local PostgreSQL/Prisma configuration. The browser displays the API connection status. **There are no calls, tickets, AI assistant, database tables, or patient records yet.** The database is not queried by `/health`.
+The workspace contains a React/TypeScript shell, a Fastify liveness endpoint, a shared Zod response contract, and local PostgreSQL/Prisma configuration. The browser displays the API connection status. **There are no Calls, WorkOrders, AI assistant, domain tables, or caller records yet.** The database is not queried by `/health`.
 
 ## Local development
 
@@ -38,8 +38,8 @@ The API build can be started separately with `pnpm --filter @switchboard/api sta
 - `packages/shared`: shared Zod contract for the health response; domain contracts will follow when implemented.
 - `docker-compose.yml`: local PostgreSQL. See [architecture and planned workflow](docs/architecture.md).
 
-The intended MVP will show both a confirmed AI-resolved administrative call **without a ticket** and a staff-required call **with a ticket**, through the same backend workflow. Neither branch is implemented yet.
+The intended MVP will show both a caller-confirmed `AI_RESOLVED` call **without a WorkOrder** (for example, an opening-hours question) and a `HUMAN_ACTION_REQUIRED` call **with a WorkOrder** (for example, a delivery issue), through the same backend workflow. Neither branch is implemented yet. Real telephony and AI integrations may be mocked during early development; the architecture is designed to evolve incrementally.
 
 ## Limitations and next steps
 
-Milestone 2 introduces fictional calls and a real calls API/dashboard. Later milestones add conditional ticket creation, a staff work queue, simulated AI output, and human review. Future production work would require authentication, authorization, auditability, retention policies, secured storage, GDPR and healthcare regulatory assessment, clinically validated scope and controls, reliable asynchronous processing, and deployment hardening. **Do not use this prototype with real healthcare data.**
+Milestone 2 introduces fictional calls and a real Calls API/dashboard. Later milestones add conditional WorkOrder creation, a Work Queue, simulated AI output, and human review. A production service would require authentication, authorization, auditability, retention policies, secured storage, privacy and regulatory assessment where applicable, reliable asynchronous processing, and deployment hardening. Do not use real caller information in this prototype.

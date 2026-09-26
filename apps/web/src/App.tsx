@@ -35,8 +35,8 @@ export function App() {
         <p className={styles.eyebrow}>Foundation</p>
         <h1 className={styles.heading}>Incoming communication, made actionable.</h1>
         <p className={styles.description}>
-          An AI-assisted healthcare communication prototype. The call history and staff work queue
-          will be added in upcoming milestones; no real patient data belongs here.
+          An AI-assisted business phone switchboard prototype. Call History and the Work Queue
+          will be added in upcoming milestones; only fictional caller data belongs here.
         </p>
       </div>
       <section aria-labelledby="connection-title" className={styles.connection}>
@@ -49,7 +49,7 @@ export function App() {
           </CardContent>
         </Card>
       </section>
-      <p className={styles.disclaimer}>Fictional demonstration only. Not a production healthcare system.</p>
+      <p className={styles.disclaimer}>Fictional demonstration only. Not a production phone service.</p>
     </main>
   );
 }
