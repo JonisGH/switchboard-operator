@@ -2,6 +2,12 @@
 
 Switchboard Operator is a conceptual AI-assisted business phone switchboard: it aims to handle incoming calls, resolve suitable requests during the conversation, and create structured WorkOrders only when human follow-up is needed. This independent engineering portfolio project is not associated with any employer or company. It explores product thinking, system design, frontend/backend integration, and pragmatic architecture. All demo data must be fictional.
 
+## Target Architecture 
+
+The diagram below shows the intended architecture and how the system can evolve beyond the current MVP.
+
+![Switchboard Operator system architecture](docs/images/system-architecture.png)
+
 ## Current state (Milestone 1)
 
 The workspace contains a React/TypeScript shell, a Fastify liveness endpoint, a shared Zod response contract, and local PostgreSQL/Prisma configuration. The browser displays the API connection status. **There are no Calls, WorkOrders, AI assistant, domain tables, or caller records yet.** The database is not queried by `/health`.
