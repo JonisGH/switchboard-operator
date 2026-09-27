@@ -14,6 +14,12 @@ enum CallOutcome {
   INCOMPLETE
 }
 
+enum WorkOrderStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
 model Call {
   id              String       @id @default(uuid()) @db.Uuid
   callerReference String?
@@ -22,6 +28,19 @@ model Call {
   startedAt       DateTime     @db.Timestamptz(3)
   endedAt         DateTime?    @db.Timestamptz(3)
   createdAt       DateTime     @default(now()) @db.Timestamptz(3)
+  workOrder       WorkOrder?
 
   @@index([startedAt(sort: Desc), id(sort: Desc)])
+}
+
+model WorkOrder {
+  id          String          @id @default(uuid()) @db.Uuid
+  callId      String          @unique @db.Uuid
+  call        Call            @relation(fields: [callId], references: [id], onDelete: Restrict)
+  title       String
+  description String?
+  status      WorkOrderStatus @default(OPEN)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+
+  @@index([status])
 }

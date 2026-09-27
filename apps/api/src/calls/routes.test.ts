@@ -13,13 +13,17 @@ const call = {
 };
 
 const apps: ReturnType<typeof createApp>[] = [];
+const unusedWorkOrders = {
+  listActive: async () => [],
+  createForCall: async () => { throw new Error("Not used in Calls tests"); },
+};
 afterEach(async () => {
   await Promise.all(apps.splice(0).map((app) => app.close()));
 });
 
 describe("GET /calls", () => {
   it("returns validated Call data, including timestamps and outcome", async () => {
-    const app = createApp({ list: async () => [call] });
+    const app = createApp({ list: async () => [call] }, unusedWorkOrders);
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/calls" });
 
@@ -30,7 +34,7 @@ describe("GET /calls", () => {
   });
 
   it("includes calls without an outcome or caller reference", async () => {
-    const app = createApp({ list: async () => [{ ...call, callerReference: null, category: null, outcome: null, endedAt: null }] });
+    const app = createApp({ list: async () => [{ ...call, callerReference: null, category: null, outcome: null, endedAt: null }] }, unusedWorkOrders);
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/calls" });
 
@@ -39,7 +43,7 @@ describe("GET /calls", () => {
   });
 
   it("returns an empty list when no calls have been recorded", async () => {
-    const app = createApp({ list: async () => [] });
+    const app = createApp({ list: async () => [] }, unusedWorkOrders);
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/calls" });
 

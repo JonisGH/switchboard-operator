@@ -1,5 +1,7 @@
 import "dotenv/config";
 import { createPrismaClient } from "../src/db.js";
+import { createWorkOrderStore } from "../src/work-orders/repository.js";
+import { createWorkOrderService } from "../src/work-orders/service.js";
 
 const prisma = createPrismaClient();
 const now = Date.now();
@@ -17,6 +19,12 @@ try {
     ],
   });
   console.log(`Added ${result.count} fictional calls (existing seed records were preserved).`);
+  const { created } = await createWorkOrderService(createWorkOrderStore(prisma)).createForCall({
+    callId: "22222222-2222-4222-8222-222222222222",
+    title: "Follow up on missing delivery",
+    description: "Fictional caller reports that a delivery has not arrived. Check the order and contact the caller.",
+  });
+  console.log(created ? "Added 1 fictional WorkOrder." : "Fictional WorkOrder already exists.");
 } finally {
   await prisma.$disconnect();
 }

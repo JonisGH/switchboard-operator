@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { App } from "./App";
+import { CallHistory } from "./calls/CallHistory";
 
 const resolvedCall = {
   id: "11111111-1111-4111-8111-111111111111",
@@ -27,7 +27,7 @@ it("loads Call History from the API and distinguishes resolved and pending calls
   ]));
   vi.stubGlobal("fetch", fetchMock);
 
-  render(<App />);
+  render(<CallHistory />);
   expect(screen.getByText("Loading calls…")).toBeInTheDocument();
   expect(await screen.findByText("AI resolved")).toBeInTheDocument();
   expect(screen.getByText("Outcome pending")).toBeInTheDocument();
@@ -39,14 +39,14 @@ it("loads Call History from the API and distinguishes resolved and pending calls
 
 it("shows an empty state when no calls are persisted", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(apiResponse([])));
-  render(<App />);
+  render(<CallHistory />);
   expect(await screen.findByText("No calls have been recorded yet.")).toBeInTheDocument();
 });
 
 it("offers a working retry when the API request fails", async () => {
   const fetchMock = vi.fn().mockRejectedValueOnce(new Error("offline")).mockResolvedValueOnce(apiResponse([resolvedCall]));
   vi.stubGlobal("fetch", fetchMock);
-  render(<App />);
+  render(<CallHistory />);
 
   expect(await screen.findByRole("alert")).toHaveTextContent("Call History could not be loaded");
   fireEvent.click(screen.getByRole("button", { name: "Retry" }));
@@ -56,6 +56,6 @@ it("offers a working retry when the API request fails", async () => {
 
 it("rejects a malformed API response instead of displaying it as a call", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(apiResponse([{ ...resolvedCall, outcome: "UNKNOWN" }])));
-  render(<App />);
+  render(<CallHistory />);
   expect(await screen.findByRole("alert")).toBeInTheDocument();
 });
