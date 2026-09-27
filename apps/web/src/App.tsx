@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Badge } from "./components/ui/badge";
 import { CallHistory } from "./calls/CallHistory";
 import { WorkQueue } from "./work-orders/WorkQueue";
+import { SimulationPanel } from "./simulations/SimulationPanel";
 import styles from "./App.module.css";
 
 export function App() {
+  const [refreshKey, setRefreshKey] = useState(0);
   return (
     <main className={styles.page}>
       <header className={styles.masthead}>
@@ -18,8 +21,9 @@ export function App() {
           in the Work Queue. All information shown here is fictional demo data.
         </p>
       </div>
-      <WorkQueue />
-      <CallHistory />
+      <SimulationPanel onCompleted={() => setRefreshKey((key) => key + 1)} />
+      <WorkQueue refreshKey={refreshKey} />
+      <CallHistory refreshKey={refreshKey} />
       <p className={styles.disclaimer}>Fictional demonstration only. Not a production phone service.</p>
     </main>
   );

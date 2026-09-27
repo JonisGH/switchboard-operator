@@ -23,7 +23,7 @@ afterEach(async () => {
 
 describe("GET /calls", () => {
   it("returns validated Call data, including timestamps and outcome", async () => {
-    const app = createApp({ list: async () => [call] }, unusedWorkOrders);
+    const app = createApp({ list: async () => [call] }, unusedWorkOrders, { simulate: async () => { throw new Error("Not used"); } });
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/calls" });
 
@@ -34,7 +34,7 @@ describe("GET /calls", () => {
   });
 
   it("includes calls without an outcome or caller reference", async () => {
-    const app = createApp({ list: async () => [{ ...call, callerReference: null, category: null, outcome: null, endedAt: null }] }, unusedWorkOrders);
+    const app = createApp({ list: async () => [{ ...call, callerReference: null, category: null, outcome: null, endedAt: null }] }, unusedWorkOrders, { simulate: async () => { throw new Error("Not used"); } });
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/calls" });
 
@@ -43,7 +43,7 @@ describe("GET /calls", () => {
   });
 
   it("returns an empty list when no calls have been recorded", async () => {
-    const app = createApp({ list: async () => [] }, unusedWorkOrders);
+    const app = createApp({ list: async () => [] }, unusedWorkOrders, { simulate: async () => { throw new Error("Not used"); } });
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/calls" });
 

@@ -11,7 +11,7 @@ type LoadState = { kind: "loading" } | { kind: "error" } | { kind: "ready"; call
 const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 const formatCategory = (category: string) => category.replaceAll("_", " ").toLowerCase().replace(/^./, (letter) => letter.toUpperCase());
 
-export function CallHistory() {
+export function CallHistory({ refreshKey = 0 }: { refreshKey?: number }) {
   const [loadState, setLoadState] = useState<LoadState>({ kind: "loading" });
   const [attempt, setAttempt] = useState(0);
 
@@ -32,7 +32,7 @@ export function CallHistory() {
 
     void loadCalls();
     return () => controller.abort();
-  }, [attempt]);
+  }, [attempt, refreshKey]);
 
   return (
     <section aria-labelledby="call-history-title" className={styles.section}>

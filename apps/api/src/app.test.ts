@@ -5,7 +5,7 @@ import { createApp } from "./app.js";
 const app = createApp({ list: async () => [] }, {
   listActive: async () => [],
   createForCall: async () => { throw new Error("Not used in health test"); },
-});
+}, { simulate: async () => { throw new Error("Not used in health test"); } });
 afterEach(async () => { await app.close(); });
 
 describe("GET /health", () => {

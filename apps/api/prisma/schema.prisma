@@ -21,14 +21,17 @@ enum WorkOrderStatus {
 }
 
 model Call {
-  id              String       @id @default(uuid()) @db.Uuid
-  callerReference String?
-  category        String?
-  outcome         CallOutcome?
-  startedAt       DateTime     @db.Timestamptz(3)
-  endedAt         DateTime?    @db.Timestamptz(3)
-  createdAt       DateTime     @default(now()) @db.Timestamptz(3)
-  workOrder       WorkOrder?
+  id                    String       @id @default(uuid()) @db.Uuid
+  callerReference       String?
+  category              String?
+  outcome               CallOutcome?
+  startedAt             DateTime     @db.Timestamptz(3)
+  endedAt               DateTime?    @db.Timestamptz(3)
+  createdAt             DateTime     @default(now()) @db.Timestamptz(3)
+  simulationScenarioKey String?
+  transcript            String?
+  aiSuggestion          Json?
+  workOrder             WorkOrder?
 
   @@index([startedAt(sort: Desc), id(sort: Desc)])
 }

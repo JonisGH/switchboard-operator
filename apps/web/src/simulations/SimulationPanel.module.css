@@ -1,0 +1,118 @@
+.section {
+  margin-top: calc(var(--spacing) * 12);
+}
+
+.heading {
+  margin-bottom: calc(var(--spacing) * 4);
+  color: var(--foreground);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.description {
+  margin-bottom: calc(var(--spacing) * 5);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: calc(var(--spacing) * 4);
+}
+
+.field {
+  display: grid;
+  gap: calc(var(--spacing) * 2);
+  min-width: 16rem;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.select {
+  min-height: calc(var(--spacing) * 9);
+  padding-inline: calc(var(--spacing) * 3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.feedback {
+  margin-top: calc(var(--spacing) * 4);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.retry {
+  margin-top: calc(var(--spacing) * 3);
+}
+
+.result {
+  margin-top: calc(var(--spacing) * 6);
+}
+
+.resultHeading {
+  margin-bottom: calc(var(--spacing) * 3);
+  color: var(--card-foreground);
+  font-weight: var(--font-weight-semibold);
+}
+
+.resultMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.comparison {
+  display: grid;
+  gap: calc(var(--spacing) * 6);
+  margin-top: calc(var(--spacing) * 6);
+}
+
+.subheading {
+  margin-bottom: calc(var(--spacing) * 2);
+  font-weight: var(--font-weight-semibold);
+}
+
+.transcript {
+  color: var(--card-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  white-space: pre-wrap;
+}
+
+.summary {
+  color: var(--card-foreground);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.detail {
+  margin-top: calc(var(--spacing) * 3);
+}
+
+.note {
+  margin-top: calc(var(--spacing) * 4);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+
+@media (min-width: 720px) {
+  .comparison {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

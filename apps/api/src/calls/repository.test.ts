@@ -9,6 +9,8 @@ it("orders Call History newest first with ID as a stable tie-breaker", async () 
   await createCallReader(prisma).list();
 
   expect(findMany).toHaveBeenCalledWith({
+    select: { id: true, callerReference: true, category: true, outcome: true,
+      startedAt: true, endedAt: true, createdAt: true },
     orderBy: [{ startedAt: "desc" }, { id: "desc" }],
   });
 });

@@ -55,3 +55,37 @@ export const workOrdersResponseSchema = z.object({
 });
 
 export type WorkOrderQueueItem = z.infer<typeof workOrdersResponseSchema>["workOrders"][number];
+
+export const simulationScenarioKeySchema = z.enum([
+  "OPENING_HOURS_V1",
+  "DELIVERY_ISSUE_V1",
+  "TRANSFER_REQUEST_V1",
+  "UNCLEAR_ENDING_V1",
+]);
+export type SimulationScenarioKey = z.infer<typeof simulationScenarioKeySchema>;
+
+export const structuredSuggestionSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  suggestedTitle: z.string().trim().min(1),
+  suggestedCategory: z.string().trim().min(1).nullable(),
+  summary: z.string().trim().min(1),
+  callerRequest: z.string().trim().min(1),
+  clarificationQuestions: z.array(z.string().trim().min(1)),
+});
+export type StructuredSuggestion = z.infer<typeof structuredSuggestionSchema>;
+
+export const simulateCallRequestSchema = z.object({
+  callId: z.uuid(),
+  scenarioKey: simulationScenarioKeySchema,
+});
+export const simulatedCallResponseSchema = z.object({
+  call: callSchema.extend({
+    outcome: callOutcomeSchema,
+    endedAt: z.iso.datetime(),
+    simulationScenarioKey: simulationScenarioKeySchema,
+    transcript: z.string().min(1),
+    aiSuggestion: structuredSuggestionSchema,
+  }),
+  workOrder: workOrderSchema.nullable(),
+});
+export type SimulatedCallResult = z.infer<typeof simulatedCallResponseSchema>;

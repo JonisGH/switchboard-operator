@@ -4,9 +4,14 @@ import { createCallReader } from "./calls/repository.js";
 import { createPrismaClient } from "./db.js";
 import { createWorkOrderStore } from "./work-orders/repository.js";
 import { createWorkOrderService } from "./work-orders/service.js";
+import { mockAIProvider } from "./simulations/mock-ai.js";
+import { createSimulationService } from "./simulations/service.js";
 
 const prisma = createPrismaClient();
-const app = createApp(createCallReader(prisma), createWorkOrderService(createWorkOrderStore(prisma)));
+const app = createApp(
+  createCallReader(prisma), createWorkOrderService(createWorkOrderStore(prisma)),
+  createSimulationService(prisma, mockAIProvider),
+);
 app.addHook("onClose", async () => prisma.$disconnect());
 const port = Number(process.env.PORT ?? 3001);
 

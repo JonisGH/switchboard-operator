@@ -1,4 +1,4 @@
-import type { Call, PrismaClient, WorkOrder } from "../generated/prisma/client.js";
+import type { Call, Prisma, PrismaClient, WorkOrder } from "../generated/prisma/client.js";
 
 export type WorkOrderWithCall = WorkOrder & {
   call: Pick<Call, "callerReference" | "category" | "startedAt">;
@@ -11,7 +11,7 @@ export interface WorkOrderStore {
   listActive(): Promise<WorkOrderWithCall[]>;
 }
 
-export function createWorkOrderStore(prisma: PrismaClient): WorkOrderStore {
+export function createWorkOrderStore(prisma: PrismaClient | Prisma.TransactionClient): WorkOrderStore {
   return {
     findCall: (callId) => prisma.call.findUnique({ where: { id: callId }, select: { outcome: true } }),
     findByCallId: (callId) => prisma.workOrder.findUnique({ where: { callId } }),

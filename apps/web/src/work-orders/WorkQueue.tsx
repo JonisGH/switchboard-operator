@@ -10,7 +10,7 @@ type LoadState = { kind: "loading" } | { kind: "error" } | { kind: "ready"; work
 const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 const formatCategory = (category: string) => category.replaceAll("_", " ").toLowerCase().replace(/^./, (letter) => letter.toUpperCase());
 
-export function WorkQueue() {
+export function WorkQueue({ refreshKey = 0 }: { refreshKey?: number }) {
   const [loadState, setLoadState] = useState<LoadState>({ kind: "loading" });
   const [attempt, setAttempt] = useState(0);
 
@@ -31,7 +31,7 @@ export function WorkQueue() {
 
     void loadWorkOrders();
     return () => controller.abort();
-  }, [attempt]);
+  }, [attempt, refreshKey]);
 
   return (
     <section aria-labelledby="work-queue-title" className={styles.section}>

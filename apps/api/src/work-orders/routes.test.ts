@@ -16,7 +16,7 @@ function appWith(service: Partial<WorkOrderService> = {}) {
     listActive: async () => [],
     createForCall: async () => ({ workOrder, created: true }),
     ...service,
-  });
+  }, { simulate: async () => { throw new Error("Not used"); } });
   apps.push(app);
   return app;
 }
