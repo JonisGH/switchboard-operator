@@ -7,5 +7,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["src", "prisma.config.ts"]
+  "include": ["src", "prisma.config.ts", "prisma/seed.ts", "tsup.config.ts"]
 }

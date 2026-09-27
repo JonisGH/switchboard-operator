@@ -1,4 +1,3 @@
-// Domain tables and the first migration are introduced with the Calls milestone.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -6,4 +5,23 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum CallOutcome {
+  AI_RESOLVED
+  HUMAN_ACTION_REQUIRED
+  TRANSFERRED
+  INCOMPLETE
+}
+
+model Call {
+  id              String       @id @default(uuid()) @db.Uuid
+  callerReference String?
+  category        String?
+  outcome         CallOutcome?
+  startedAt       DateTime     @db.Timestamptz(3)
+  endedAt         DateTime?    @db.Timestamptz(3)
+  createdAt       DateTime     @default(now()) @db.Timestamptz(3)
+
+  @@index([startedAt(sort: Desc), id(sort: Desc)])
 }

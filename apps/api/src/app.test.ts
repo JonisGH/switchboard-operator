@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { healthResponseSchema } from "@switchboard/shared";
 import { createApp } from "./app.js";
 
-const app = createApp();
+const app = createApp({ list: async () => [] });
 afterEach(async () => { await app.close(); });
 
 describe("GET /health", () => {

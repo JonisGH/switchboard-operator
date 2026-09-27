@@ -48,21 +48,6 @@
   line-height: var(--leading-relaxed);
 }
 
-.connection {
-  margin-top: calc(var(--spacing) * 12);
-}
-
-.connectionTitle {
-  color: var(--card-foreground);
-  font-weight: var(--font-weight-semibold);
-}
-
-.connectionStatus {
-  margin-top: calc(var(--spacing) * 2);
-  color: var(--muted-foreground);
-  font-size: var(--text-sm);
-}
-
 .disclaimer {
   margin-top: calc(var(--spacing) * 8);
   color: var(--muted-foreground);

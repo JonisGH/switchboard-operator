@@ -1,0 +1,32 @@
+.section {
+  margin-top: calc(var(--spacing) * 12);
+}
+
+.heading {
+  margin-bottom: calc(var(--spacing) * 4);
+  color: var(--foreground);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.state {
+  padding-block: calc(var(--spacing) * 4);
+  color: var(--muted-foreground);
+}
+
+.retry {
+  margin-top: calc(var(--spacing) * 4);
+}
+
+.category {
+  color: var(--card-foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+.fallback {
+  color: var(--muted-foreground);
+}
+
+.timestamp {
+  color: var(--muted-foreground);
+}

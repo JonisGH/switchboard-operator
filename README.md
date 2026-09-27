@@ -5,12 +5,13 @@ Switchboard Operator is a conceptual AI-assisted business phone switchboard: it 
 ## Target Architecture 
 
 The diagram below shows the intended architecture and how the system can evolve beyond the current MVP.
+Its WorkOrders, orchestration, and voice paths are not implemented yet.
 
 ![Switchboard Operator system architecture](docs/images/system-architecture.png)
 
-## Current state (Milestone 1)
+## Current state (Milestone 2)
 
-The workspace contains a React/TypeScript shell, a Fastify liveness endpoint, a shared Zod response contract, and local PostgreSQL/Prisma configuration. The browser displays the API connection status. **There are no Calls, WorkOrders, AI assistant, domain tables, or caller records yet.** The database is not queried by `/health`.
+The application persists fictional Calls in PostgreSQL, reads them through Prisma and `GET /calls`, and displays them in Call History. The frontend validates the API response using a shared Zod contract. An outcome can be pending (`null`), while `INCOMPLETE` is an explicitly unresolved outcome. **There are no WorkOrders, AI assistant, real calls, transcripts, or telephony integrations yet.** The `/health` endpoint checks API liveness, not database readiness.
 
 ## Local development
 
@@ -21,11 +22,13 @@ pnpm install
 cp apps/api/.env.example apps/api/.env
 docker compose up -d db
 pnpm db:validate
+pnpm db:migrate
 pnpm db:generate
+pnpm db:seed
 pnpm dev
 ```
 
-Open http://127.0.0.1:5173. The API is at http://127.0.0.1:3001/health; the Vite development server forwards `/api/*` requests to it. PostgreSQL is available on `127.0.0.1:5433` with **demo-only** credentials in `docker-compose.yml`. `pnpm db:generate` generates a client but does not create any tables; the first schema/migration belongs to the Calls milestone. Stop the local DB with `docker compose down` (data remains in the named volume).
+Open http://127.0.0.1:5173. The API exposes `GET /health` and `GET /calls` at http://127.0.0.1:3001; the Vite development server forwards `/api/*` requests to it. PostgreSQL is available on `127.0.0.1:5433` with **demo-only** credentials in `docker-compose.yml`. The migration creates the Call table; `db:generate` creates the local Prisma client. `db:seed` adds five fictional Calls with fixed IDs and skips existing seeds on repeat runs. Stop the local DB with `docker compose down` (data remains in the named volume).
 
 Checks:
 
@@ -40,12 +43,12 @@ The API build can be started separately with `pnpm --filter @switchboard/api sta
 ## Stack and architecture
 
 - `apps/web`: React, Vite, Tailwind CSS, shadcn/ui primitives, CSS Modules for page-specific styling, React Testing Library.
-- `apps/api`: Fastify, TypeScript, Vitest, Prisma configuration.
-- `packages/shared`: shared Zod contract for the health response; domain contracts will follow when implemented.
+- `apps/api`: Fastify, TypeScript, Vitest, a read-only Calls API, and Prisma with the PostgreSQL driver adapter.
+- `packages/shared`: Zod contracts for health and Call History responses.
 - `docker-compose.yml`: local PostgreSQL. See [architecture and planned workflow](docs/architecture.md).
 
-The intended MVP will show both a caller-confirmed `AI_RESOLVED` call **without a WorkOrder** (for example, an opening-hours question) and a `HUMAN_ACTION_REQUIRED` call **with a WorkOrder** (for example, a delivery issue), through the same backend workflow. Neither branch is implemented yet. Real telephony and AI integrations may be mocked during early development; the architecture is designed to evolve incrementally.
+Fictional seed data includes `AI_RESOLVED`, `HUMAN_ACTION_REQUIRED`, `TRANSFERRED`, `INCOMPLETE`, and a Call without an outcome. These are stored demonstration records, **not the result of an implemented AI workflow**. The intended MVP will eventually confirm an AI-resolved call without a WorkOrder and create a WorkOrder only for a call requiring human action. Real telephony and AI integrations may be mocked during early development; the architecture is designed to evolve incrementally.
 
 ## Limitations and next steps
 
-Milestone 2 introduces fictional calls and a real Calls API/dashboard. Later milestones add conditional WorkOrder creation, a Work Queue, simulated AI output, and human review. A production service would require authentication, authorization, auditability, retention policies, secured storage, privacy and regulatory assessment where applicable, reliable asynchronous processing, and deployment hardening. Do not use real caller information in this prototype.
+Call History is read-only and currently returns all Calls without pagination or filters; `GET /calls/:id` waits for a real Call Details view. Later milestones add conditional WorkOrder creation, a Work Queue, simulated AI output, and human review. A production service would require authentication, authorization, auditability, retention policies, secured storage, privacy and regulatory assessment where applicable, reliable asynchronous processing, and deployment hardening. Do not use real caller information in this prototype.
