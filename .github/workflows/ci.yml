@@ -1,0 +1,38 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.26.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Start PostgreSQL and migrate isolated test schema
+        run: |
+          docker compose up -d --wait db
+          docker compose exec -T db psql -U switchboard -d switchboard -c 'CREATE SCHEMA IF NOT EXISTS switchboard_sim_test'
+          pnpm --filter @switchboard/api exec prisma migrate deploy
+          pnpm --filter @switchboard/api exec prisma migrate status
+        env:
+          DATABASE_URL: postgresql://switchboard:switchboard_local_only@127.0.0.1:5433/switchboard?schema=switchboard_sim_test
+      - run: pnpm db:generate
+        env:
+          DATABASE_URL: postgresql://switchboard:switchboard_local_only@127.0.0.1:5433/switchboard?schema=switchboard_sim_test
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: PostgreSQL integration tests (must not skip)
+        run: pnpm test:integration
+        env:
+          TEST_DATABASE_URL: postgresql://switchboard:switchboard_local_only@127.0.0.1:5433/switchboard?schema=switchboard_sim_test
+      - run: pnpm build
