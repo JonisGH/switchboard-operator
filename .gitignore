@@ -6,4 +6,3 @@ coverage/
 !.env.example
 apps/api/src/generated/
 *.tsbuildinfo
-.notesToSelf.txt
