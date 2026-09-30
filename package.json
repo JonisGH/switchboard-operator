@@ -7,6 +7,7 @@
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
+    "test:integration": "pnpm --filter @switchboard/api test:integration",
     "db:generate": "pnpm --filter @switchboard/api db:generate",
     "db:validate": "pnpm --filter @switchboard/api db:validate",
     "db:migrate": "pnpm --filter @switchboard/api db:migrate",

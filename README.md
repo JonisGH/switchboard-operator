@@ -39,10 +39,21 @@ Checks:
 ```bash
 pnpm typecheck
 pnpm test
+pnpm test:integration
 pnpm build
 ```
 
-PostgreSQL transaction tests use a separate schema in the same local database. To run them, create it once with `docker compose exec -T db psql -U switchboard -d switchboard -c 'CREATE SCHEMA IF NOT EXISTS switchboard_sim_test'`, apply migrations with `DATABASE_URL='postgresql://switchboard:switchboard_local_only@127.0.0.1:5433/switchboard?schema=switchboard_sim_test' pnpm --filter @switchboard/api exec prisma migrate deploy`, then run `TEST_DATABASE_URL='postgresql://switchboard:switchboard_local_only@127.0.0.1:5433/switchboard?schema=switchboard_sim_test' pnpm test`. Without that variable, the integration suite is skipped; other tests still run.
+`pnpm test` runs the database-free tests. For `pnpm test:integration`, prepare a separate PostgreSQL schema (do not use `public` or demo records):
+
+```bash
+docker compose up -d --wait db
+docker compose exec -T db psql -U switchboard -d switchboard -c 'CREATE SCHEMA IF NOT EXISTS switchboard_sim_test'
+export TEST_DATABASE_URL='postgresql://switchboard:switchboard_local_only@127.0.0.1:5433/switchboard?schema=switchboard_sim_test'
+DATABASE_URL="$TEST_DATABASE_URL" pnpm --filter @switchboard/api exec prisma migrate deploy
+pnpm test:integration
+```
+
+The integration command **fails** if `TEST_DATABASE_URL` does not explicitly name `switchboard_sim_test` or PostgreSQL is unavailable. CI creates that schema and runs both test commands. Prisma CLI and the runtime adapter both use the `?schema=` URL parameter; the runtime defaults to `public` when omitted.
 
 The API build can be started separately with `pnpm --filter @switchboard/api start` after `pnpm build`. Configuration examples are in `apps/api/.env.example`; real `.env` files are ignored by Git.
 
